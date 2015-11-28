@@ -1,8 +1,6 @@
 package ninja.justyna.pierogi;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -15,7 +13,6 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import java.io.File;
@@ -28,8 +25,6 @@ public class MainActivity extends AppCompatActivity {
     private Uri fileUri;
     public static final int MEDIA_TYPE_IMAGE = 1;
     private Button btnCapturePicture;
-
-    private ImageView imgPreview;
 
     /** Create a file Uri for saving an image */
     private static Uri getOutputMediaFileUri(int type){
@@ -74,8 +69,6 @@ public class MainActivity extends AppCompatActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        imgPreview = (ImageView) findViewById(R.id.imgPreview);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -154,26 +147,6 @@ public class MainActivity extends AppCompatActivity {
 
         // get the file url
         fileUri = savedInstanceState.getParcelable("file_uri");
-    }
-
-    /**
-     * Display image from a path to ImageView
-     */
-    private void previewCapturedImage() {
-        try {
-
-            imgPreview.setVisibility(View.VISIBLE);
-
-            // bimatp factory
-            BitmapFactory.Options options = new BitmapFactory.Options();
-
-            final Bitmap bitmap = BitmapFactory.decodeFile(fileUri.getPath(),
-                    options);
-
-            imgPreview.setImageBitmap(bitmap);
-        } catch (NullPointerException e) {
-            e.printStackTrace();
-        }
     }
 
     @Override

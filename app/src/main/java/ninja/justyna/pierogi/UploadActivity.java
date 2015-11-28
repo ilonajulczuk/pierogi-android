@@ -107,10 +107,6 @@ public class UploadActivity extends AppCompatActivity {
             // bimatp factory
             BitmapFactory.Options options = new BitmapFactory.Options();
 
-            // down sizing image as it throws OutOfMemory Exception for larger
-            // images
-            // options.inSampleSize = 8;
-
             final Bitmap bitmap = BitmapFactory.decodeFile(filePath, options);
 
             imgPreview.setImageBitmap(bitmap);
