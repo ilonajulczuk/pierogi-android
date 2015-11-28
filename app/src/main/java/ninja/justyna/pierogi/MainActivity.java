@@ -77,9 +77,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        imgPreview = (ImageView) findViewById(R.id.imgPreview);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        imgPreview = (ImageView) findViewById(R.id.imgPreview);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -117,16 +118,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         // if the result is capturing Image
         if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
-            Toast.makeText(getApplicationContext(),
-                    "Returned from activity", Toast.LENGTH_SHORT)
-                    .show();
             if (resultCode == RESULT_OK) {
                 // successfully captured the image
                 // display it in image view
-                Toast.makeText(getApplicationContext(),
-                        "Result ok", Toast.LENGTH_SHORT)
-                        .show();
-                previewCapturedImage();
+                launchUploadActivity(true);
+
             } else if (resultCode == RESULT_CANCELED) {
                 // user cancelled Image capture
                 Toast.makeText(getApplicationContext(),
@@ -178,7 +174,7 @@ public class MainActivity extends AppCompatActivity {
 
             // downsizing image as it throws OutOfMemory Exception for larger
             // images
-            options.inSampleSize = 8;
+            //options.inSampleSize = 8;
 
             final Bitmap bitmap = BitmapFactory.decodeFile(fileUri.getPath(),
                     options);
@@ -209,5 +205,12 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void launchUploadActivity(boolean isImage){
+        Intent i = new Intent(MainActivity.this, UploadActivity.class);
+        i.putExtra("filePath", fileUri.getPath());
+        i.putExtra("isImage", isImage);
+        startActivity(i);
     }
 }
