@@ -2,20 +2,12 @@ package ninja.justyna.pierogi;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -84,7 +76,6 @@ public class UploadActivity extends AppCompatActivity {
                 client.post("http://172.27.133.4:8000/food/", params, new AsyncHttpResponseHandler() {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                        Log.w("async", "success!!!!");
                         Toast.makeText(getApplicationContext(),
                                 "uploaded successfully", Toast.LENGTH_LONG)
                                 .show();
@@ -93,10 +84,10 @@ public class UploadActivity extends AppCompatActivity {
                     @Override
                     public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                         try {
-                            Toast.makeText(getApplicationContext(),
-                                    "fail, oh no!!!" + Integer.toString(statusCode) + new String(responseBody, "UTF-8"), Toast.LENGTH_LONG)
+                            String message = "failure at upload" + Integer.toString(statusCode) + new String(responseBody, "UTF-8");
+                            Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG)
                                     .show();
-                            Log.w("async", "fail, oh no!!!" + Integer.toString(statusCode) + new String(responseBody, "UTF-8"));
+                            Log.w(TAG, message);
                         } catch (UnsupportedEncodingException e) {
                             e.printStackTrace();
                         }
@@ -124,21 +115,5 @@ public class UploadActivity extends AppCompatActivity {
 
             imgPreview.setImageBitmap(bitmap);
         }
-    }
-
-    /**
-     * Method to show alert dialog
-     * */
-    private void showAlert(String message) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage(message).setTitle("Response from Servers")
-                .setCancelable(false)
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        // do nothing
-                    }
-                });
-        AlertDialog alert = builder.create();
-        alert.show();
     }
 }
